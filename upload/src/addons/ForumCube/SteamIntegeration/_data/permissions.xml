@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<permissions>
+  <permission permission_group_id="fcSteam" permission_id="fcSteamContent" permission_type="flag" interface_group_id="fcSteam" display_order="1"/>
+</permissions>

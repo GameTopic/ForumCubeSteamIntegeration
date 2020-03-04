@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class_extensions>
+  <extension from_class="XF\Entity\UserOption" to_class="ForumCube\SteamIntegeration\Extend\Entity\UserOption" execute_order="10" active="1"/>
+  <extension from_class="XF\Pub\Controller\Account" to_class="ForumCube\SteamIntegeration\Extend\Pub\Controller\Account" execute_order="10" active="1"/>
+  <extension from_class="XF\Pub\Controller\Member" to_class="ForumCube\SteamIntegeration\Extend\Pub\Controller\Member" execute_order="10" active="1"/>
+</class_extensions>
