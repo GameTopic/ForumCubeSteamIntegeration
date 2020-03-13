@@ -10,6 +10,7 @@ Key Features(s):
 Planned featured(s):
 - Sync Steam Avatar and Steam Cover 
 - Redeem steam game using redeem code
+- Able to sort steam games and steam workshop using filters
 - Display steam game library in your account
 - Option to disable Steam tabs privacy
 - Support [OzzModz] Default Profile Tab
