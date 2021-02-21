@@ -33,9 +33,10 @@ class Steam
             $steamsIds[] = $friends['steamid'];
         }
 
-        $steamsIds = implode(',',$steamsIds);
+        $steamsIds = !empty($steamsIds) ? implode(',',$steamsIds) : [];
 
-        $friends = $this->getusers( $steamsIds );
+
+        $friends = !empty($steamsIds) ? $this->getusers( $steamsIds ) : [];
 
         return $friends;
     }
@@ -64,8 +65,7 @@ class Steam
         $response = $this->request('GET',$url,[]);
         $response = json_decode($response,true);
 
-
-        return $response['response']['games'];
+        return !empty($response['response']) ? $response['response']['games'] : [];
     }
 
 

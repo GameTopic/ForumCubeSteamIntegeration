@@ -15,6 +15,10 @@ class SteamWorkShop extends Entity
         $structure->columns = [
             'workshop_id' => ['type' => self::UINT, 'autoIncrement' => true],
             'name' => ['type' => self::STR, 'required' => true],
+            'category' => ['type' => self::STR, 'required' => true],
+            'price' => ['type' => self::UINT, 'required' => true],
+            'software' => ['type' => self::STR, 'required' => true],
+            'game' => ['type' => self::STR, 'required' => true],
             'link' => ['type' => self::STR, 'required' => true],
             'attachment' => ['type' => self::STR, 'required' => true],
             'user_id' => ['type' => self::UINT, 'required' =>true ],

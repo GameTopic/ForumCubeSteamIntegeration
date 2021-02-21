@@ -21,7 +21,7 @@ class UserOption extends XFCP_UserOption
         $request = \XF::App()->request();
         $input = $request->filter([
                 'fc_steam_data' => 'uint'
-            ]
+                ]
         );
 
         $this->bulkSet($input);

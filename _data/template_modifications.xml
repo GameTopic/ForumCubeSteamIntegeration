@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <template_modifications>
+  <modification type="public" template="PAGE_CONTAINER" modification_key="fc_turn_of_copyright" execution_order="10" enabled="1" action="str_replace">
+    <find><![CDATA[{{ phrase('extra_copyright') }}]]></find>
+    <replace><![CDATA[<xf:if is="!$xf.options.fc_steam_site_branding">
+				{{ phrase('extra_copyright') }}
+</xf:if>
+
+]]></replace>
+  </modification>
   <modification type="public" template="account_preferences" modification_key="fc_added_options_sync" description="Options are added to display steam api data" execution_order="10" enabled="1" action="str_replace">
     <find><![CDATA[<xf:checkboxrow label="{{ phrase('content_options') }}">]]></find>
     <replace><![CDATA[<xf:checkboxrow label="{{ phrase('fc_steam_data') }}">
@@ -10,21 +18,24 @@ $0]]></replace>
   </modification>
   <modification type="public" template="account_visitor_menu" modification_key="fc_steam_account_visitor_menu" description="Adding steam privacy tab in the menu" execution_order="10" enabled="1" action="str_replace">
     <find><![CDATA[<!--[XF:account_links:bottom]-->]]></find>
-    <replace><![CDATA[<li><a href="{{ link('account/steam-privacy') }}" class="menu-linkRow">{{ phrase('fc_steam_privacy') }}</a></li>
-]]></replace>
+    <replace><![CDATA[<xf:if is="!{$xf.options.fc_steam_tabs_disable}">
+	<li><a href="{{ link('account/steam-privacy') }}" class="menu-linkRow">{{ phrase('fc_steam_privacy') }}</a></li>
+</xf:if>]]></replace>
   </modification>
   <modification type="public" template="account_wrapper" modification_key="fc_user_steam_privacy" description="Added page to allow user to view his/her steam tab data" execution_order="10" enabled="1" action="str_replace">
     <find><![CDATA[<!--[XF:profile_links:top]-->]]></find>
     <replace><![CDATA[$0
-<a class="blockLink {{ $pageSelected == 'steam-privacy' ? 'is-selected' : '' }}" href="{{ link('account/steam-privacy/') }}">
-	{{ phrase('fc_steam_privacy') }}
-</a>]]></replace>
+<xf:if is="!{$xf.options.fc_steam_tabs_disable}">
+	<a class="blockLink {{ $pageSelected == 'steam-privacy' ? 'is-selected' : '' }}" href="{{ link('account/steam-privacy/') }}">
+		{{ phrase('fc_steam_privacy') }}
+	</a>
+</xf:if>	]]></replace>
   </modification>
   <modification type="public" template="member_view" modification_key="fc_steam_friends_pane" description="Added option for steam friends pane display" execution_order="10" enabled="1" action="str_replace">
     <find><![CDATA[<!--[XF:tab_panes:end]-->]]></find>
     <replace><![CDATA[<li data-href="{{ link('members/steam-friends', $user) }}" role="tabpanel" aria-labelledby="steam-friends">
 		<div class="blockMessage">{{ phrase('loading...') }}</div>
-	</li>
+	</li>	 
 $0]]></replace>
   </modification>
   <modification type="public" template="member_view" modification_key="fc_steam_friends_tab" description="Added option for steam friends" execution_order="10" enabled="1" action="str_replace">
@@ -47,7 +58,7 @@ $0]]></replace>
     <replace><![CDATA[<a href="{{ link('members/steam-game', $user) }}"
 					class="tabs-tab"
 					id="steam-game"
-					role="tab">{{ phrase('fc_steam_game') }}</a>
+					role="tab">{{ phrase('fc_steam_game') }}</a>	
 $0]]></replace>
   </modification>
   <modification type="public" template="member_view" modification_key="fc_steam_workshop_pane" description="Added option for steam workshop pane display" execution_order="10" enabled="1" action="str_replace">

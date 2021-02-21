@@ -1,0 +1,30 @@
+{
+    "legacy_addon_id": "",
+    "title": "[NICK97] SteamIntegeration",
+    "description": "Integerating the steam data to XF",
+    "version_id": 2020070,
+    "version_string": "2.2.0",
+    "dev": "NICK97",
+    "dev_url": "https://xen-shop.com",
+    "faq_url": "https://xen-shop.com/faq/",
+    "support_url": "https://gameplaycanada.weebly.com/contact-us.html",
+    "extra_urls": {
+        "Gaming Community": "https://cities-mods.com",
+        "Donate": "https://www.cities-mods.com/donate/"
+    },
+    "require": {
+        "php": [
+            "7.2.0",
+            "PHP 7.2.0+"
+        ],
+        "XF": [
+            2020000,
+            "XenForo 2.2.0+"
+        ],
+        "BlackTea/SteamAuth": [
+            10709070,
+            "BlackTea/SteamAuth by Studio70 v1.7.9+"
+        ]
+    },
+    "icon": "fab fa-steam"
+}

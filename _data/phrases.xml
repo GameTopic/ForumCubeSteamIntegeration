@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phrases>
+  <phrase title="fc_add_steam_friend" version_id="90000" version_string="0.9.0"><![CDATA[Add Stream Friend]]></phrase>
+  <phrase title="fc_add_steam_game" version_id="90000" version_string="0.9.0"><![CDATA[Add Steam Game]]></phrase>
+  <phrase title="fc_add_steam_workshop" version_id="90000" version_string="0.9.0"><![CDATA[Add Steam WorkShop]]></phrase>
+  <phrase title="fc_allow_permissions" version_id="90000" version_string="0.9.0"><![CDATA[Please allow permission to write a file]]></phrase>
+  <phrase title="fc_already_exist" version_id="90000" version_string="0.9.0"><![CDATA[Friend already exist in your list]]></phrase>
+  <phrase title="fc_free" version_id="90009" version_string="0.9.2"><![CDATA[Free]]></phrase>
+  <phrase title="fc_friend_is_visitor" version_id="90000" version_string="0.9.0"><![CDATA[No cannot add yourself]]></phrase>
+  <phrase title="fc_game" version_id="90009" version_string="0.9.2"><![CDATA[Game]]></phrase>
+  <phrase title="fc_name" version_id="90000" version_string="0.9.0"><![CDATA[Name]]></phrase>
+  <phrase title="fc_paid" version_id="90009" version_string="0.9.2"><![CDATA[Paid]]></phrase>
+  <phrase title="fc_remove" version_id="90000" version_string="0.9.0"><![CDATA[Remove]]></phrase>
+  <phrase title="fc_required_extentions" version_id="90000" version_string="0.9.0"><![CDATA[Please insert the image formats only]]></phrase>
+  <phrase title="fc_steam_data" version_id="90000" version_string="0.9.0"><![CDATA[Steam Data Sync]]></phrase>
+  <phrase title="fc_steam_friends" version_id="90000" version_string="0.9.0"><![CDATA[Steam Friends]]></phrase>
+  <phrase title="fc_steam_game" version_id="90000" version_string="0.9.0"><![CDATA[Steam Games]]></phrase>
+  <phrase title="fc_steam_privacy" version_id="90000" version_string="0.9.0"><![CDATA[Steam tabs privacy]]></phrase>
+  <phrase title="fc_steam_site_branding" version_id="90009" version_string="0.9.2"><![CDATA[Footer branding]]></phrase>
+  <phrase title="fc_steam_site_branding_data" version_id="90009" version_string="0.9.2"><![CDATA[Remove the branding appearing in the footer]]></phrase>
+  <phrase title="fc_steam_workshop" version_id="90000" version_string="0.9.0"><![CDATA[Steam WorkShop]]></phrase>
+  <phrase title="fc_sure_delete_user" version_id="90000" version_string="0.9.0"><![CDATA[Are you sure?]]></phrase>
+  <phrase title="fc_sync_steam_data" version_id="90000" version_string="0.9.0"><![CDATA[Sync steam api data to dislpay on profile tabs]]></phrase>
+  <phrase title="game_type" version_id="90009" version_string="0.9.2"><![CDATA[Game Type]]></phrase>
+  <phrase title="option.fc_steam_game_dropdown" version_id="90009" version_string="0.9.2"><![CDATA[DropDown Fields]]></phrase>
+  <phrase title="option.fc_steam_site_branding" version_id="90010" version_string="0.9.3"><![CDATA[Disable site branding]]></phrase>
+  <phrase title="option.fc_steam_tabs_disable" version_id="90010" version_string="0.9.3"><![CDATA[Disable Steam Tabs Privacy]]></phrase>
+  <phrase title="option_explain.fc_steam_game_dropdown" version_id="90009" version_string="0.9.2"><![CDATA[]]></phrase>
+  <phrase title="option_explain.fc_steam_site_branding" version_id="90010" version_string="0.9.3"><![CDATA[]]></phrase>
+  <phrase title="option_explain.fc_steam_tabs_disable" version_id="90009" version_string="0.9.2"><![CDATA[]]></phrase>
+  <phrase title="option_group.fc_steam_tab_options" version_id="90009" version_string="0.9.3"><![CDATA[Steam Integeration]]></phrase>
+  <phrase title="option_group_description.fc_steam_tab_options" version_id="90012" version_string="0.9.3"><![CDATA[Integerating the steam data to XF]]></phrase>
+  <phrase title="os_x" version_id="90009" version_string="0.9.2"><![CDATA[Os]]></phrase>
+  <phrase title="permission.fcSteam_fcSteamContent" version_id="90010" version_string="0.9.3"><![CDATA[Can See User's Steam Tab Contents]]></phrase>
+  <phrase title="permission_interface.fcSteam" version_id="90010" version_string="0.9.3"><![CDATA[Steam Content]]></phrase>
+  <phrase title="software" version_id="90009" version_string="0.9.2"><![CDATA[Software]]></phrase>
+</phrases>

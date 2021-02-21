@@ -93,6 +93,46 @@ class Setup extends AbstractSetup
         // TODO: Implement install() method.
     }
 
+    /** lets add the more columns in the steam workshop */
+    public function upgrade90010Step1()
+    {
+        $this->schemaManager()->alterTable('xf_fc_steam_workshop', function(Alter $table)
+        {
+            $table->addColumn('category', 'varchar',128);
+            $table->addColumn('price','int',10)->setDefault(0);
+            $table->addColumn('software','varchar',128);
+            $table->addColumn('game','varchar',128);
+        });
+        // TODO: Implement upgrade() method.
+    }
+
+    /** lets add the more columns in the steam game */
+    public function upgrade90010Step2()
+    {
+        $this->schemaManager()->alterTable('xf_fc_steam_game', function (Alter $table)
+        {
+            $table->addColumn('software','varchar',128);
+            $table->addColumn('category','varchar',128);
+            $table->addColumn('game_type','varchar',128);
+            $table->addColumn('os','varchar',128);
+            $table->addColumn('dlc','varchar',128);
+            $table->addColumn('games','varchar',128);
+            $table->addColumn('content_pack','varchar',128);
+            $table->addColumn('price','int',10)->setDefault(0);
+        });
+    }
+
+    /** lets insert the new column in the user table */
+    public function upgrade90010Step3() {
+        try {
+            $this->schemaManager()->alterTable('xf_user_option', function(Alter $table) {
+                $table->addColumn('fc_steam_site_branding', 'int', 10)->setDefault(0);
+            });
+        } catch (Exception $exception) {
+
+        }
+        // TODO: Implement install() method.
+    }
 
     /**
      * Uninstall table steam game that was added
@@ -132,6 +172,7 @@ class Setup extends AbstractSetup
     public function uninstallStep5() {
         $this->schemaManager()->alterTable('xf_user_option', function(Alter $table) {
             $table->dropColumns('fc_steam_data');
+            $table->dropColumns('fc_steam_site_branding');
         });
     }
 

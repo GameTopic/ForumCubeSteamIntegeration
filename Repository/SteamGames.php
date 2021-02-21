@@ -14,8 +14,7 @@ class SteamGames extends Repository
     public function getAllGames( $userId )
     {
         return $this->finder('ForumCube\SteamIntegeration:SteamGame')
-                    ->where( 'user_id' , $userId )
-                    ->fetch();
+                    ->where( 'user_id' , $userId );
     }
 
     public function getUserGameById( $userId , $gameId )

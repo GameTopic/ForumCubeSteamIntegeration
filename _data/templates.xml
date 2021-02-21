@@ -1,0 +1,927 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+  <template type="admin" title="fc_steam_game_fields" version_id="90009" version_string="0.9.2"><![CDATA[<xf:formrow 
+    label="{$option.title}"
+    hint="{$hintHtml}">
+                <ul class="listPlain inputPair-container">
+				<xf:if is="{$option.option_value}">
+                <xf:foreach loop="$option.option_value.field_name" key="$num" value="$text">
+                            <xf:if is="{$text}">
+                            <li class="inputPair"> 
+                                <input name="options[{$option.option_id}][field_name][]" class="input" type="text" value="{$option.option_value.field_name.{$num}}" size="5" placeholder="Field Name" />
+								 <input name="options[{$option.option_id}][field_value][]" class="input" type="text" value="{$option.option_value.field_value.{$num}}" size="10"  placeholder="Field Value" />
+                            </li>
+                            </xf:if>
+					</xf:foreach>
+					</xf:if>
+                        <li class="inputPair" data-xf-init="field-adder">
+                          <input name="options[{$option.option_id}][field_name][]" class="input" type="text" size="5" value="" placeholder="Field Name" />
+						  <input name="options[{$option.option_id}][field_value][]" class="input" type="text" size="10"  value="" placeholder="Field Value" />
+                        </li>
+                        {$explainHtml}
+                    </ul></xf:formrow>
+
+<input type="hidden" name="options_listed[]" value="{$option.option_id}" />]]></template>
+  <template type="public" title="fc_add_steam_friend" version_id="90000" version_string="0.9.0"><![CDATA[<xf:title>{{ phrase('add') }}</xf:title>
+
+<xf:form action="{{ link('members/add-steam-friends') }}" class="block" ajax="true">
+
+	<div class="block-container">
+		<div class="block-body">
+			<xf:formrow label="{{ phrase('filter_by_user') }}" rowtype="input">
+			 <xf:textbox name="friend" class="input--inline" ac="single" />
+			</xf:formrow>
+		</div>
+		<xf:submitrow rowtype="simple" icon="save" />
+	</div>
+
+	<xf:redirect />
+
+</xf:form>]]></template>
+  <template type="public" title="fc_add_steam_game" version_id="90009" version_string="0.9.3"><![CDATA[<xf:title>{{ phrase('add') }}</xf:title>
+
+<xf:css>
+.image-upload>input {
+  display: none;
+}
+#preview {
+	width:110px;
+	height: auto;
+	object-fit: contain;
+}
+</xf:css>
+
+<xf:form action="{{ link('members/add-steam-game') }}" class="block" ajax="true">
+	<div s="block-container">
+		<div class="block-body">
+		<xf:foreach loop="$field_names"	value="$field">
+		  <xf:selectrow name="{$field}" value="{$field}" label="{{$field}}">
+			<xf:foreach loop="$xf.options.fc_steam_game_dropdown.field_name" key="$num" value="$text">
+			  <xf:if is="{$field} == {$xf.options.fc_steam_game_dropdown.field_name.{$num}} " >
+				<xf:option value="{$xf.options.fc_steam_game_dropdown.field_value.{$num}}" selected="{$xf.options.fc_steam_game_dropdown.field_value.{$num}} == {$game.{$text}}">{$xf.options.fc_steam_game_dropdown.field_value.{$num}}</xf:option>
+			  </xf:if>
+			</xf:foreach>
+		  </xf:selectrow>
+		</xf:foreach>	
+			<xf:hiddenval name="game">{$game->game_id}</xf:hiddenval>
+			<xf:textboxrow name="name" value="{{ $game.name }}"
+							 label="{{ phrase('fc_name') }}" />
+			
+			<xf:textboxrow name="link" value="{{ $game.link }}" 
+						   label="{{ phrase('link') }}"/>
+			
+			<xf:textboxrow name="category" value="{{ $game.category }}"
+						   label="{{ phrase('category') }}"/>
+			
+			<xf:textboxrow name="software" value="{{ $game.software }}"
+						   label="{{ phrase('software') }}"/>
+			
+			<xf:textboxrow name="game_type" value="{{ $game.game_type }}"
+						   label="{{ phrase('game_type') }}"/>
+			
+			<xf:selectrow name="free" label="{{ phrase('type') }}">
+				<xf:option value="0" label="{{ phrase('fc_free') }}" selected="{{$game.price}} == 0" />
+				<xf:option value="1" label="{{ phrase('fc_paid') }}" selected="{{$game.price}} != 0" />
+            </xf:selectrow>
+			
+			<xf:numberboxrow name="price" value="{{ $game.price }}" id="price_field"
+						   label="{{ phrase('price') }}"/>
+			
+			<dl class="formRow formRow--input">
+						<dt>
+							<div class="formRow-labelWrapper">
+							<label class="formRow-label">{{phrase('image')}}</label>
+							</div>
+						</dt>
+						<xf:if is="{$game.attachment}">
+						<dd class="image-upload">	
+							<label for="file" class="browse">
+								<p class="button">select image:</p><br>
+								<img id="preview" src="{$xf.options.boardUrl}/data/ForumCube/images/{$game.attachment}"/>
+							 </label>
+							 <input class="input file" name="attachment" accept=".png,.jpg,.jpeg,.jpe,.gif"  id=" file" type="file" >
+							</dd>
+							<xf:else/>
+						<dd>
+						  <input class="input" name="attachment" accept=".png,.jpg,.jpeg,.jpe,.gif"  type="file" >
+							</xf:if>
+				
+						</dd>
+			</dl>
+		 
+		</div>
+		<xf:submitrow rowtype="simple" icon="save" />
+	</div>
+
+	<xf:redirect />
+	
+</xf:form>
+<xf:js>
+	$(document).ready(function(){	
+	    $('#price_field').attr('disabled', 'disabled');
+		$('select').change(function () {
+			if( this.value == 1 )
+			{
+			 $('#price_field').removeAttr('disabled');
+			}else{
+			   $('#price_field').attr('disabled', 'disabled');
+			}
+			
+		});
+	
+		let price = "{{$game.price}}";
+		if( price != 0)
+		{
+			$('#price_field').removeAttr('disabled');
+		}
+	});
+	// upload image account forms
+		$(document).on("click", ".browse", function() {
+			var file = $(this).parents().find(".file");
+			file.trigger("click");
+		  });
+		  $('input[type="file"]').change(function(e) {
+			var fileName = e.target.files[0].name;
+			$("#file").val(fileName);
+
+			var reader = new FileReader();
+			reader.onload = function(e) {
+			  // get loaded data and render thumbnail.
+			  document.getElementById("preview").src = e.target.result;
+			};
+			// read the image file as a data URL.
+			reader.readAsDataURL(this.files[0]);
+		  });
+
+</xf:js>]]></template>
+  <template type="public" title="fc_add_steam_workshop" version_id="90009" version_string="0.9.3"><![CDATA[<xf:title>{{ phrase('add') }}</xf:title>
+<xf:css>
+.image-upload>input {
+  display: none;
+}
+#preview {
+	width:110px;
+	height: auto;
+	object-fit: contain;
+}
+</xf:css>
+<xf:form action="{{ link('members/add-steam-workshop') }}" class="block" ajax="true">
+
+	<div class="block-container">
+		<div class="block-body">
+		    <xf:hiddenval name="workshop">{$workshop->workshop_id}</xf:hiddenval>
+			<xf:textboxrow name="name" value="{$workshop.name}"
+							 label="{{ phrase('fc_name') }}" />
+			
+			<xf:textboxrow name="link" value="{$workshop.link}" type="link"
+						   label="{{ phrase('link') }}"/>
+			
+			<xf:textboxrow name="category" value="{$workshop.category}"
+						   label="{{ phrase('category') }}"/>
+			
+			<xf:textboxrow name="software" value="{$workshop.software}"
+						   label="{{ phrase('software') }}"/>
+			
+			<xf:textboxrow name="game" value="{$workshop.game}"
+						   label="{{ phrase('game') }}"/>
+			
+			<xf:selectrow name="free" label="{{ phrase('type') }}">
+				<xf:option value="0" label="{{ phrase('free') }}" selected="{$workshop.price} == 0"/>
+				<xf:option value="1" label="{{ phrase('paid') }}" selected="{$workshop.price} != 0" />
+            </xf:selectrow>
+			
+			<xf:numberboxrow name="price" value="" id="price_field" value="{$workshop.price}"
+						   label="{{ phrase('price') }}"/>
+			
+			<dl class="formRow formRow--input">
+						<dt>
+							<div class="formRow-labelWrapper">
+							<label class="formRow-label">{{phrase('image')}}</label>
+							</div>
+						</dt>
+						<xf:if is="{$workshop.attachment}">
+						<dd class="image-upload">	
+							<label for="file" class="browse">
+								<p class="button">select image:</p><br>
+								<img id="preview" src="{$xf.options.boardUrl}/data/ForumCube/images/{$workshop.attachment}"/>
+							 </label>
+							 <input class="input file" name="attachment" accept=".png,.jpg,.jpeg,.jpe,.gif"  id=" file" type="file" >
+							</dd>
+							<xf:else/>
+						<dd>
+						  <input class="input" name="attachment" accept=".png,.jpg,.jpeg,.jpe,.gif"  type="file" >
+							</xf:if>
+				
+						</dd>
+			</dl>
+		 
+		</div>
+		<xf:submitrow rowtype="simple" icon="save" />
+	</div>
+
+	<xf:redirect />
+
+</xf:form>
+<xf:js>
+	$(document).ready(function(){	
+	    $('#price_field').attr('disabled', 'disabled');
+		$('select').change(function () {
+			if( this.value == 1 )
+			{
+			 $('#price_field').removeAttr('disabled');
+			}else{
+			   $('#price_field').attr('disabled', 'disabled');
+			}
+		});
+	  let price = {{$workshop.price}};
+	  console.log(price);
+	  if(price != 0)
+		{
+		$('#price_field').removeAttr('disabled');
+		$('#price_field').val(price);
+		}
+	});
+	// upload image account forms
+		$(document).on("click", ".browse", function() {
+			var file = $(this).parents().find(".file");
+			file.trigger("click");
+		  });
+		  $('input[type="file"]').change(function(e) {
+			var fileName = e.target.files[0].name;
+			$("#file").val(fileName);
+
+			var reader = new FileReader();
+			reader.onload = function(e) {
+			  // get loaded data and render thumbnail.
+			  document.getElementById("preview").src = e.target.result;
+			};
+			// read the image file as a data URL.
+			reader.readAsDataURL(this.files[0]);
+		  });
+
+</xf:js>]]></template>
+  <template type="public" title="fc_confirm_remove" version_id="90000" version_string="0.9.0"><![CDATA[<xf:title>{{ phrase('confirm_action') }}</xf:title>
+
+<xf:form action="{{ link( $route ) }}" class="block" ajax="true">
+
+	<div class="block-container">
+		<div class="block-body">
+			<xf:inforow rowtype="confirm">
+				{{ phrase('fc_sure_delete_user') }}
+			</xf:inforow>
+		</div>
+		<xf:hiddenval name="game">{$game}</xf:hiddenval>
+		<xf:hiddenval name="workShop">{$workShop}</xf:hiddenval>
+		<xf:hiddenval name="user_id">{$user_id}</xf:hiddenval>
+		<xf:hiddenval name="username">{$username}</xf:hiddenval>
+		
+		<xf:submitrow rowtype="simple" icon="delete" />
+	</div>
+
+	<xf:redirect />
+
+</xf:form>]]></template>
+  <template type="public" title="fc_game_overview_macros" version_id="90009" version_string="0.9.3"><![CDATA[<xf:macro name="list_filter_bar" arg-filters="!" arg-baseLinkPath="!" arg-user="!" arg-category="{{ null }}" arg-creatorFilter="{{ null }}">
+	<xf:set var="$sortOrders" value="{{ {
+		'last_update': phrase('xfrm_last_update'),
+		'resource_date': phrase('xfrm_submission_date'),
+		'rating_weighted': phrase('rating'),
+		'download_count': phrase('xfrm_downloads'),
+		'title': phrase('title')
+	} }}" />
+
+	<div class="block-filterBar">
+		<div class="filterBar">
+			<!--<xf:if contentcheck="true">-->
+				<ul class="filterBar-filters">
+					<!--<xf:contentcheck>-->
+					<xf:set var="$basePath">{{$baseLinkPath}}/#steam-game</xf:set>
+				
+						<xf:if is="$filters.type">
+							<li><span class="filterBar-filterToggle-label">{{ phrase('price:') }}</span>
+								<xf:if is="$filters.type == 'free'">{{ phrase('fc_free') }}<xf:else />{{ phrase('fc_paid') }}</xf:if></li>
+						</xf:if>
+						<xf:if is="$filters.name">
+							<li><span class="filterBar-filterToggle-label">{{ phrase('name:') }}</span>
+								{{ $filters.name }}</li>
+						</xf:if>
+						<xf:if is="$filters.category">
+							<li><span class="filterBar-filterToggle-label">{{ phrase('category:') }}</span>
+								{{ $filters.category }}</li>
+						</xf:if>
+						<xf:if is="$filters.games">
+							<li><span class="filterBar-filterToggle-label">{{ phrase('games:') }}</span>
+								{{ $filters.games }}</li>
+						</xf:if>
+						<xf:if is="$filters.software">
+							<li><span class="filterBar-filterToggle-label">{{ phrase('software:') }}</span>
+								{{ $filters.software }}</li>
+						</xf:if>
+						<xf:if is="$filters.os">
+							<li><span class="filterBar-filterToggle-label">{{ phrase('os:') }}</span>
+								{{ $filters.os }}</li>
+						</xf:if>
+						<xf:if is="$filters.content_pack">
+							<li><span class="filterBar-filterToggle-label">{{ phrase('content_pack:') }}</span>
+								{{ $filters.content_pack }}</li>
+						</xf:if>
+						<xf:if is="$filters.dlc">
+							<li><span class="filterBar-filterToggle-label">{{ phrase('dlc:') }}</span>
+								{{ $filters.dlc }}</li>
+						</xf:if>
+						<xf:if is="$filters.game_type">
+							<li><span class="filterBar-filterToggle-label">{{ phrase('game_type:') }}</span>
+								{{ $filters.game_type }}</li>
+						</xf:if>
+					<!--</xf:contentcheck>-->
+				</ul>
+			<!--</xf:if>-->
+
+			<a class="filterBar-menuTrigger" data-xf-click="menu" role="button" tabindex="0" aria-expanded="false" aria-haspopup="true">{{ phrase('filters') }}</a>
+		
+			<div class="menu menu--wide" data-menu="menu" aria-hidden="true" 
+				data-href="{{ link($baseLinkPath . '/filters', '', {'user_id': $user.user_id}) }}"
+				data-load-target=".js-filterMenuBody">
+				<div class="menu-content">
+					<h4 class="menu-header">{{ phrase('show_only:') }}</h4>
+					<div class="js-filterMenuBody">
+						<div class="menu-row">{{ phrase('loading...') }}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</xf:macro>]]></template>
+  <template type="public" title="fc_steam.less" version_id="90009" version_string="0.9.2"><![CDATA[.fc_button_addSteam{
+		    margin: 10px;
+   			 float: right;
+	}
+	.fc_container{
+		display: inline-block;
+		width:100%;
+	}
+	.contentRow {
+    display: flex;
+    float: left;
+    width: 100%;
+}
+	.fc_datarow {
+    flex: 0 50%;
+    border-top: 0px solid #dfdfdf !important;
+		border-bottom: 1px solid #dfdfdf;
+    box-sizing: border-box;
+}
+	.block-row.block-row--separated + .block-row {
+    border-top: 0px solid #dfdfdf;
+}
+	.fc_mainheading{
+		padding:0px 10px;
+		
+	}
+
+	.fc_row {
+    display: flex;
+    flex-wrap: wrap;
+}
+	
+	.fc_friend_row {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    float: left;
+    width: 50%;
+    border-bottom: solid 1px #dfdfdf;
+    border-top: 0px;
+}
+.fc_game_main_img {
+	height:150px;
+	width:180px;
+	object-fit:cover;
+}]]></template>
+  <template type="public" title="fc_steam_data_privacy" version_id="90000" version_string="0.9.0"><![CDATA[<xf:js src="xf/login_signup.js" min="1" />
+<xf:title>{{ phrase('fc_steam_privacy') }}</xf:title>
+<style>
+
+	.block-row.block-row--separated {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    float: left;
+    width: 50%;
+    border-bottom: solid 1px #dfdfdf;
+		border-top:0px;
+}
+	.block-row.block-row--separated + .block-row{
+		border-top:0px;
+	}
+	
+</style>
+
+
+<xf:wrap template="account_wrapper" />
+
+<xf:form action="{{ link('account/steam-privacy') }}" overlay="true" class="block">
+    <div class="block-container">
+        <div class="block-body">
+			
+			<xf:formrow label="{{ phrase('filter_by_user') }}" rowtype="input">
+				<xf:textbox name="visitor_username" class="input--inline" ac="single"/>
+			</xf:formrow>
+	   </div>
+		<xf:submitrow sticky="true" icon="save" />
+	</div>
+</xf:form>
+
+<div class="block-container">
+  <div class="block-body">
+	 <li class="block-row">
+			<div class="contentRow">
+			   <div class="contentRow-main">
+
+				   <xf:foreach loop="$users" value="$user">
+					 <div class="block-row block-row--separated">
+						<div class="contentRow contentRow--alignMiddle">
+						<div class="contentRow-figure">
+						  <section itemscope itemtype="https://schema.org/Person" class="message-user">
+							<div class="message-avatar {{ ($xf.options.showMessageOnlineStatus && $user && $user.isOnline()) ? 'message-avatar--online' : '' }}">
+							  <div class="message-avatar-wrapper">
+								<xf:avatar user="$user" size="s"  canonical="true" />
+							  </div>
+							</div>
+						  </section>
+						</div>
+						<div class="contentRow-main">
+						  <h3 class="contentRow-title">{$user.username}</h3>
+						</div>
+								<xf:button href="{{ link('account/remove-user-access', null, {'user': $user.username}) }}"
+										class="button--link" overlay="true">
+										 {{ phrase('fc_remove') }}
+							</xf:button>
+					  </div>
+					  </div>
+				   </xf:foreach>
+
+			   </div>
+			</div>
+		</li>
+	</div>
+</div>]]></template>
+  <template type="public" title="fc_steam_friends" version_id="90001" version_string="0.9.1"><![CDATA[<xf:css src="fc_steam.less" />
+
+<div class="block-container fc_container">
+		 <xf:button href="{{ link('members/add-steam-friends') }}" overlay="true" class="button fc_button_addSteam">
+			 {{ phrase('fc_add_steam_friend') }}
+		 </xf:button>
+  <div class="block-body">
+	 <li class="block-row">
+			<div class="contentRow">
+			   <div class="contentRow-main">
+
+				   <xf:foreach loop="$users" value="$user">
+					 <div class="block-row block-row--separated fc_friend_row">
+						<div class="contentRow contentRow--alignMiddle">
+						<div class="contentRow-figure">
+						  <section itemscope itemtype="https://schema.org/Person" class="message-user">
+							<div class="message-avatar {{ ($xf.options.showMessageOnlineStatus && $user && $user.isOnline()) ? 'message-avatar--online' : '' }}">
+							  <div class="message-avatar-wrapper">
+								<xf:avatar user="$user" size="s"  canonical="true" />
+							  </div>
+							</div>
+						  </section>
+						</div>
+						<div class="contentRow-main">
+						  <h3 class="contentRow-title">{$user.username}</h3>
+						</div>
+
+							<xf:if is="{$xf.visitor.user_id} == {$currentUser.user_id}">	
+								<xf:button href="{{ link('members/remove-friend', $currentUser, {'user': $user.username}) }}"
+										class="button--link" overlay="true">
+										 {{ phrase('fc_remove') }}
+								</xf:button>
+							</xf:if>
+					  </div>
+					  </div>
+				   </xf:foreach>
+
+			   </div>
+			</div>
+		</li>
+	  <xf:if is="$steamFriends">
+		<div class="p-title fc_mainheading ">
+		  <h2 class="p-title-value">{{ phrase('fc_steam_friends') }}</h2>
+		</div>
+	  	<li class="block-row">
+			<div class="contentRow">
+			   <div class="contentRow-main">
+
+				   <xf:foreach loop="$steamFriends" value="$steamFriend">
+					 <div class="block-row block-row--separated fc_friend_row">
+						<div class="contentRow contentRow--alignMiddle">
+						<div class="contentRow-figure">
+						  <section itemscope itemtype="https://schema.org/Person" class="message-user">
+							<div class="message-avatar {{ ($xf.options.showMessageOnlineStatus && $user && $user.isOnline()) ? 'message-avatar--online' : '' }}">
+							  <div class="message-avatar-wrapper">
+								<img src="{$steamFriend.avatarmedium}" />
+							  </div>
+							</div>
+						  </section>
+						</div>
+						<div class="contentRow-main">
+						  <h3 class="contentRow-title">{$steamFriend.personaname}</h3>
+						</div>
+					  </div>
+					  </div>
+				   </xf:foreach>
+
+			   </div>
+			</div>
+		</li>
+	 </xf:if>	  
+	</div>
+</div>]]></template>
+  <template type="public" title="fc_steam_game" version_id="90010" version_string="0.9.3"><![CDATA[<xf:css src="fc_steam.less" />
+
+<div class="block">
+<div class="block-container fc_container">
+
+<xf:macro template="fc_game_overview_macros" name="list_filter_bar"
+			arg-filters="{$filters}"
+		   	arg-user="{$user}"
+			arg-baseLinkPath="members"
+			arg-creatorFilter="{$creatorFilter}" />
+	
+<xf:if is="{$user.user_id} == {$xf.visitor.user_id}">
+	<xf:button href="{{ link('members/add-steam-game') }}" overlay="true" class="button fc_button_addSteam">
+		{{ phrase('fc_add_steam_game') }}
+	</xf:button>
+</xf:if>
+	
+<div class="block-body">
+
+<div class="block-row block-row--separated">
+
+	 <li class="block-row">
+        <div class="contentRow">
+           <div class="contentRow-main fc_row">			   
+			  <xf:foreach loop="$allGames" value="$game">
+				 <div class="block-row block-row--separated fc_datarow">
+				   <div class="contentRow-main1">
+				     
+					 <div class="fc_content_wrap" style="display:flex; align-items: flex-end;">  
+						<span class="contentRow-figure contentRow-figure--text">
+							 <img class="fc_game_main_img" src="{$xf.options.boardUrl}/data/ForumCube/images/{$game.attachment}"/>
+						 </span>
+						  <div class="contentRow-main">	 
+						   <h2 class="contentRow-header"> {$game.name}</h2>
+						   <div class="contentRow-minor">link: <a href="{$game.link}">{$game.link}</a></div>
+						<xf:if is="count({$filters}) > 0">
+							  <div class="contentRow-minor">Software: {$game.software}</div>
+							<div class="contentRow-minor">Category: {$game.category}</div>
+							<div class="contentRow-minor">OS: {$game.os}</div>
+							<div class="contentRow-minor">Content Pack: {$game.content_pack}</div> 
+							<div class="contentRow-minor">Dlc: {$game.dlc}</div>  
+							<div class="contentRow-minor">Game: {$game.games}</div> 
+							  <div class="contentRow-minor">Game Type: {$game.game_type}</div> 
+						   <xf:if is="{$game.price} == 0">
+							   <div class="contentRow-minor">Free: Yes</div>
+						   <xf:else/>
+							    <div class="contentRow-minor">Price: {$game.price}</div>
+						   </xf:if>	
+						</xf:if>
+					  </div>	
+				
+						 <xf:if is="{$xf.visitor.user_id} == {$user.user_id}">					
+							 <span class="contentRow-extra">
+								 <xf:button href="{{ link('members/edit-steam-game', $game, {'game': $game.game_id}) }}"
+										class="button--link" overlay="true">
+										 {{ phrase('edit') }}
+								</xf:button>
+								<xf:button href="{{ link('members/remove', $user, {'game': $game.game_id}) }}"
+										class="button--link" overlay="true">
+										 {{ phrase('fc_remove') }}
+								</xf:button>
+							 </span>
+						 </xf:if>
+					 </div>	 
+				   </div>
+				  </div>
+			 </xf:foreach>
+		
+		   </div>
+		</div>
+	</li>
+ <xf:if is="{$steamGames}">	
+
+	<div class="p-title fc_mainheading ">
+	   <h2 class="p-title-value">{{ phrase('fc_steam_game') }} </h2>
+	  </div>
+	<li class="block-row">
+        <div class="contentRow">
+           <div class="contentRow-main fc_row">
+			
+			 <xf:foreach loop="$steamGames" value="$steamGame">
+				<!-- start if -->  
+				<xf:if is="{$filters.name} != {$steamGame.name}"> 
+				 <div class="block-row block-row--separated fc_datarow">
+				   <div class="contentRow-main1">
+				     
+					 <div class="fc_content_wrap" style="display:flex; align-items: flex-end;">  
+						<span class="contentRow-figure contentRow-figure--text">
+							 <img style="height:70px;width:110px" src="https://steamcdn-a.akamaihd.net/steam/apps/{$steamGame.appid}/header.jpg"/>
+						 </span>
+						  <div class="contentRow-main">	 
+						   <h2 class="contentRow-header">{$steamGame.name}</h2>
+							  <xf:set var="$gameLink">https://steamcommunity.com/app/{$steamGame.appid}</xf:set>
+						   <div class="contentRow-minor">link: <a href="{$gameLink}">{$gameLink}</a></div>
+					  </div>	
+					
+					 </div>	 
+				   </div>
+				  </div>
+				<!--end if -->  		
+				</xf:if>	
+			   </xf:foreach>
+		
+		   </div>
+		</div>
+	</li>
+  </xf:if>	
+</div>
+</div>
+</div>
+</div>]]></template>
+  <template type="public" title="fc_steam_game_filters" version_id="90009" version_string="0.9.2"><![CDATA[<xf:form action="{{ link($user ? 'members/steam-game' : 'members/steam-game', $user) }}">
+	<!--[XF:above_type]-->
+
+	<xf:foreach loop="$field_names"	value="$field">
+		<div class="menu-row ">
+	    	{{$field}} 
+			<div class="u-inputSpacer">
+		  <xf:select name="{$field}" value="{$field}">
+			  <xf:option value="">{{phrase('(any)')}}</xf:option>
+			<xf:foreach loop="$xf.options.fc_steam_game_dropdown.field_name" key="$num" value="$text">
+			  <xf:if is="{$field} == {$xf.options.fc_steam_game_dropdown.field_name.{$num}} " >
+				<xf:option value="{$xf.options.fc_steam_game_dropdown.field_value.{$num}}" selected="{$xf.options.fc_steam_game_dropdown.field_value.{$num}} == {$game.{$text}}">{$xf.options.fc_steam_game_dropdown.field_value.{$num}}</xf:option>
+			  </xf:if>
+			</xf:foreach>
+		  </xf:select>
+			</div></div>
+		</xf:foreach>
+
+	<!--[XF:above_created_by]-->
+	<div class="menu-row menu-row--separated">
+		{{ phrase('fc_name:') }}
+		<div class="u-inputSpacer">
+			<xf:textbox name="name"  />
+		</div>
+	</div>
+	
+	
+	<!--[XF:above_name]-->
+	<div class="menu-row menu-row--separated">
+		{{ phrase('software:') }}
+		<div class="u-inputSpacer">
+			<xf:textbox name="software"  />
+		</div>
+	</div>
+
+	<!--[XF:above_software]-->
+	<div class="menu-row menu-row--separated">
+		{{ phrase('category:') }}
+		<div class="u-inputSpacer">
+			<xf:textbox name="category"  />
+		</div>
+	</div>
+	
+	<!--[XF:above_category]-->
+	<div class="menu-row menu-row--separated">
+		{{ phrase('game_type:') }}
+		<div class="u-inputSpacer">
+			<xf:textbox name="game_type"  />
+		</div>
+	</div>
+
+	<input type="hidden" name="user_id" value="{$user_id}" />
+	<div class="menu-row menu-row--separated">
+			{{ phrase('type:') }}
+			<div class="u-inputSpacer">
+				<xf:select name="type" value="{$filters.type}">
+					<xf:option value="">{{ phrase('any') }}</xf:option>
+					<xf:option value="free">{{ phrase('fc_free') }}</xf:option>
+					<xf:option value="paid">{{ phrase('fc_paid') }}</xf:option>
+				</xf:select>
+			</div>
+		</div>
+	
+	<div class="menu-footer">
+		<span class="menu-footer-controls">
+			<xf:button type="submit" class="button--primary">{{ phrase('filter') }}</xf:button>
+		</span>
+	</div>
+	<xf:hiddenval name="apply">1</xf:hiddenval>
+</xf:form>]]></template>
+  <template type="public" title="fc_steam_workshop" version_id="90010" version_string="0.9.3"><![CDATA[<style>
+	.fc_button_addSteam{
+		    margin: 10px;
+   			 float: right;
+	}
+	.contentRow {
+    display: flex;
+    float: left;
+    width: 100%;
+}
+	.fc_datarow {
+    flex: 0 50%;
+    border-top: 0px solid #dfdfdf !important;
+		border-bottom: 1px solid #dfdfdf;
+    box-sizing: border-box;
+}
+	.fc_row {
+    display: flex;
+    flex-wrap: wrap;
+}
+	
+</style>
+
+<div class="block">
+<div class="block-container">
+	
+	<xf:macro template="fc_workshop_overview_macros" name="list_filter_bar"
+			arg-filters="{$filters}"
+		   	arg-user="{$user}"
+			arg-baseLinkPath="members"
+			arg-creatorFilter="{$creatorFilter}" />
+	
+<xf:if is="{$user.user_id} == {$xf.visitor.user_id}">	
+	<xf:button href="{{ link('members/add-steam-workshop') }}" overlay="true" class="button fc_button_addSteam">
+		{{ phrase('fc_add_steam_workshop') }}
+	</xf:button>
+</xf:if>	
+	
+<div class="block-body">
+<div class="block-row block-row--separated">
+	 <li class="block-row">
+        <div class="contentRow">
+           <div class="contentRow-main fc_row">	 
+			  <xf:foreach loop="$allWorkShops" value="$workshop"> 
+				  <div class="block-row block-row--separated fc_datarow">
+				   <div class="contentRow-main1">   
+					 <div class="fc_content_wrap" style="display:flex; align-items: flex-end;">  
+						<span class="contentRow-figure contentRow-figure--text">
+							 <img style="height:100px;width:150px" src="{$xf.options.boardUrl}/data/ForumCube/images/{$workshop.attachment}"/>
+						 </span>
+						  <div class="contentRow-main">	 
+						   <h2 class="contentRow-header"> {$workshop.name}</h2>
+						   <div class="contentRow-minor">Game: {$workshop.game}</div>
+						<xf:if is="count({$filters}) > 0">	  
+						   <div class="contentRow-minor">Category: {$workshop.category}</div>
+						   <div class="contentRow-minor">Software: {$workshop.software}</div>
+						   <xf:if is="{$workshop.price} == 0">
+							   <div class="contentRow-minor">Free: Yes</div>
+						   <xf:else/>
+							    <div class="contentRow-minor">Price: {$workshop.price}</div>
+						   </xf:if>	  
+						   <div class="contentRow-minor">Link: <a href="{$workshop.link}">{$workshop.link}</a></div>
+						 </xf:if>
+							</div>	
+						 <xf:if is="{$xf.visitor.user_id} == {$user.user_id}">					
+							 <span class="contentRow-extra">
+								  <xf:button href="{{ link('members/edit-steam-workshop', $user, {'workshop': $workshop.workshop_id}) }}"
+										class="button--link" overlay="true">
+										 {{ phrase('edit') }}
+								</xf:button>
+								  <xf:button href="{{ link('members/remove', $user, {'workshop': $workshop.workshop_id}) }}"
+										class="button--link" overlay="true">
+										 {{ phrase('fc_remove') }}
+								</xf:button>
+							 </span>
+						 </xf:if>
+					 </div>	 
+				   </div>
+				  </div>
+			   </xf:foreach>
+		
+		   </div>
+		</div>
+	</li>
+</div>
+</div>
+</div>
+</div>]]></template>
+  <template type="public" title="fc_steam_workshop_filters" version_id="90009" version_string="0.9.2"><![CDATA[<xf:form action="{{ link($user ? 'members/steam-workshop' : 'members/steam-workshop', $user) }}">
+
+	<!--[XF:above_created_by]-->
+	<div class="menu-row menu-row--separated">
+		{{ phrase('fc_name:') }}
+		<div class="u-inputSpacer">
+			<xf:textbox name="name"  />
+		</div>
+	</div>
+	
+	
+	<!--[XF:above_name]-->
+	<div class="menu-row menu-row--separated">
+		{{ phrase('software:') }}
+		<div class="u-inputSpacer">
+			<xf:textbox name="software"  />
+		</div>
+	</div>
+
+	<!--[XF:above_software]-->
+	<div class="menu-row menu-row--separated">
+		{{ phrase('category:') }}
+		<div class="u-inputSpacer">
+			<xf:textbox name="category"  />
+		</div>
+	</div>
+	
+	<!--[XF:above_category]-->
+	<div class="menu-row menu-row--separated">
+		{{ phrase('fc_game:') }}
+		<div class="u-inputSpacer">
+			<xf:textbox name="game"  />
+		</div>
+	</div>
+
+	<input type="hidden" name="user_id" value="{$user_id}" />
+	<div class="menu-row menu-row--separated">
+			{{ phrase('type:') }}
+			<div class="u-inputSpacer">
+				<xf:select name="type" value="{$filters.type}">
+					<xf:option value="">{{ phrase('any') }}</xf:option>
+					<xf:option value="free">{{ phrase('fc_free') }}</xf:option>
+					<xf:option value="paid">{{ phrase('fc_paid') }}</xf:option>
+				</xf:select>
+			</div>
+		</div>
+	
+	<div class="menu-footer">
+		<span class="menu-footer-controls">
+			<xf:button type="submit" class="button--primary">{{ phrase('filter') }}</xf:button>
+		</span>
+	</div>
+	<xf:hiddenval name="apply">1</xf:hiddenval>
+</xf:form>]]></template>
+  <template type="public" title="fc_workshop_overview_macros" version_id="90009" version_string="0.9.2"><![CDATA[<xf:macro name="list_filter_bar" arg-filters="!" arg-baseLinkPath="!" arg-user="!" arg-category="{{ null }}" arg-creatorFilter="{{ null }}">
+	<xf:set var="$sortOrders" value="{{ {
+		'last_update': phrase('xfrm_last_update'),
+		'resource_date': phrase('xfrm_submission_date'),
+		'rating_weighted': phrase('rating'),
+		'download_count': phrase('xfrm_downloads'),
+		'title': phrase('title')
+	} }}" />
+
+	<div class="block-filterBar">
+		<div class="filterBar">
+			<!--<xf:if contentcheck="true">-->
+				<ul class="filterBar-filters">
+					<!--<xf:contentcheck>-->
+						<xf:set var="$basePathLink">{{$baseLinkPath}}/#steam-workshop</xf:set>
+					
+						<xf:if is="$filters.type">
+							<li><a href="{{ link($basePathLink, $user, $filters|replace('type', null)) }}"
+								class="filterBar-filterToggle" data-xf-init="tooltip" title="{{ phrase('remove_this_filter')|for_attr }}">
+								<span class="filterBar-filterToggle-label">{{ phrase('price:') }}</span>
+								<xf:if is="$filters.type == 'free'">{{ phrase('fc_free') }}<xf:else />{{ phrase('fc_paid') }}</xf:if></a></li>
+						</xf:if>
+						<xf:if is="$filters.name">
+							<li><a href="{{ link($basePathLink, $user, $filters|replace('name', null)) }}"
+								class="filterBar-filterToggle" data-xf-init="tooltip" title="{{ phrase('remove_this_filter')|for_attr }}">
+								<span class="filterBar-filterToggle-label">{{ phrase('fc_name:') }}</span>
+								{{ $filters.name }}</a></li>
+						</xf:if>
+						<xf:if is="$filters.category">
+							<li><a href="{{ link($basePathLink, $user, $filters|replace('category', null)) }}"
+								class="filterBar-filterToggle" data-xf-init="tooltip" title="{{ phrase('remove_this_filter')|for_attr }}">
+								<span class="filterBar-filterToggle-label">{{ phrase('category:') }}</span>
+								{{ $filters.category }}</a></li>
+						</xf:if>
+						<xf:if is="$filters.game">
+							<li><a href="{{ link($basePathLink, $user, $filters|replace('game', null)) }}"
+								class="filterBar-filterToggle" data-xf-init="tooltip" title="{{ phrase('remove_this_filter')|for_attr }}">
+								<span class="filterBar-filterToggle-label">{{ phrase('fc_game:') }}</span>
+								{{ $filters.game }}</a></li>
+						</xf:if>
+						<xf:if is="$filters.software">
+							<li><a href="{{ link($basePathLink, $user, $filters|replace('software', null)) }}"
+								class="filterBar-filterToggle" data-xf-init="tooltip" title="{{ phrase('remove_this_filter')|for_attr }}">
+								<span class="filterBar-filterToggle-label">{{ phrase('software:') }}</span>
+								{{ $filters.software }}</a></li>
+						</xf:if>
+					<!--</xf:contentcheck>-->
+				</ul>
+			<!--</xf:if>-->
+
+			<a class="filterBar-menuTrigger" data-xf-click="menu" role="button" tabindex="0" aria-expanded="false" aria-haspopup="true">{{ phrase('filters') }}</a>
+			<div class="menu menu--wide" data-menu="menu" aria-hidden="true" 
+				data-href="{{ link($baseLinkPath . '/workshop-filters', '', {'user_id': $user.user_id}) }}"
+				data-load-target=".js-filterMenuBody">
+				<div class="menu-content">
+					<h4 class="menu-header">{{ phrase('show_only:') }}</h4>
+					<div class="js-filterMenuBody">
+						<div class="menu-row">{{ phrase('loading...') }}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</xf:macro>]]></template>
+</templates>

@@ -15,7 +15,7 @@ class SteamWorkShop extends Repository
     {
         return $this->finder('ForumCube\SteamIntegeration:SteamWorkShop')
                     ->where( 'user_id',$userId )
-                    ->fetch();
+                    /*->fetch()*/;
     }
 
     public function getUserWorkshopByIds( $userId , $workshopId)
